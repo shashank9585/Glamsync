@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          String    @default("CUSTOMER")
+  phone         String?
+  createdAt     DateTime  @default(now())
+  
+  bookings      Booking[]
+  reviews       Review[]
+  ownedSalon    Salon?
+  stylistProfile Stylist?
+}
+
+model Salon {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  city        String
+  address     String
+  lat         Float
+  lng         Float
+  image       String
+  ownerId     String    @unique
+  owner       User      @relation(fields: [ownerId], references: [id])
+  stylists    Stylist[]
+  services    Service[]
+  bookings    Booking[]
+}
+
+model Stylist {
+  id          String    @id @default(cuid())
+  name        String
+  specialty   String
+  bio         String
+  experience  Int
+  rating      Float     @default(0)
+  image       String
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
+  salonId     String
+  salon       Salon     @relation(fields: [salonId], references: [id])
+  portfolio   PortfolioImage[]
+  bookings    Booking[]
+}
+
+model Service {
+  id          String    @id @default(cuid())
+  name        String
+  price       Int
+  duration    Int
+  salonId     String
+  salon       Salon     @relation(fields: [salonId], references: [id])
+  bookings    Booking[]
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  date          DateTime
+  time          String
+  status        String   @default("PENDING")
+  isHomeService Boolean  @default(false)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  stylistId     String
+  stylist       Stylist  @relation(fields: [stylistId], references: [id])
+  serviceId     String
+  service       Service  @relation(fields: [serviceId], references: [id])
+  salonId       String
+  salon         Salon    @relation(fields: [salonId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  salonId   String
+  createdAt DateTime @default(now())
+}
+
+model PortfolioImage {
+  id        String  @id @default(cuid())
+  imageUrl  String
+  stylistId String
+  stylist   Stylist @relation(fields: [stylistId], references: [id])
+}
+
+model BeautyPlan {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  goal      String
+  prompt    String
+  response  String
+  createdAt DateTime @default(now())
+}

@@ -1,11 +1,17 @@
 "use client"
 import { useState, useEffect } from "react"
+import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Search, SlidersHorizontal } from "lucide-react"
 import SalonCard from "@/components/salon-card"
-import MapView from "@/components/map-view"
+
+// FIX: Dynamically import MapView so it only loads in the browser (fixes "window is not defined")
+const MapView = dynamic(() => import("@/components/map-view"), {
+  ssr: false,
+  loading: () => <div className="h-[500px] flex items-center justify-center bg-muted/30 rounded-xl">Loading map...</div>
+})
 
 interface Salon {
   id: string

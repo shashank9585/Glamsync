@@ -1,6 +1,3 @@
-Here's a professional, comprehensive README for GlamSync. Delete everything in your `README.md` file and paste this:
-
-```markdown
 # ✨ GlamSync - AI-Powered Beauty & Styling Platform
 
 **Your AI-Powered Glamour Platform** - Discover salons, find expert stylists, and plan your beauty journey with intelligent recommendations.
@@ -90,8 +87,7 @@ GlamSync features a premium **Jewel Gold** color theme with warm cream backgroun
 1. **Clone the repository**
 ```bash
 git clone https://github.com/shashank9585/Glamsync.git
-cd Glamsync
-```
+cd Glamsync```
 
 2. **Install dependencies**
 ```bash

@@ -53,9 +53,10 @@ const salons = [
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const salon = salons.find((s) => s.id === params.id)
+  const { id } = await params
+  const salon = salons.find((s) => s.id === id)
   if (!salon) return NextResponse.json({ error: "Salon not found" }, { status: 404 })
   return NextResponse.json(salon)
 }

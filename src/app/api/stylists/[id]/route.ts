@@ -61,9 +61,10 @@ const stylists = [
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const stylist = stylists.find((s) => s.id === params.id)
+  const { id } = await params
+  const stylist = stylists.find((s) => s.id === id)
   
   if (!stylist) {
     return NextResponse.json({ error: "Stylist not found" }, { status: 404 })

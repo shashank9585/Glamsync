@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group" // We will install this next if needed, or use standard buttons
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ArrowLeft, CheckCircle2, CreditCard, Clock, Calendar, Loader2 } from "lucide-react"
 
 // Mock Services Data
@@ -20,7 +20,7 @@ const mockServices = [
 
 const timeSlots = ["10:00 AM", "11:30 AM", "01:00 PM", "02:30 PM", "04:00 PM", "05:30 PM"]
 
-export default function BookingPage() {
+function BookingContent() {
   const searchParams = useSearchParams()
   const salonId = searchParams.get("salonId")
   const stylistId = searchParams.get("stylistId")
@@ -229,5 +229,13 @@ export default function BookingPage() {
         </Card>
       )}
     </div>
+  )
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto py-10 px-4 text-center">Loading booking...</div>}>
+      <BookingContent />
+    </Suspense>
   )
 }
